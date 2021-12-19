@@ -1,8 +1,8 @@
 E:\git\ai_jammers\project\.mono\temp\bin\Debug\Godot Project.dll
 E:\git\ai_jammers\project\.mono\temp\bin\Debug\Godot Project.pdb
-E:\git\ai_jammers\project\.mono\temp\obj\Debug\Godot Project.csprojAssemblyReference.cache
 E:\git\ai_jammers\project\.mono\temp\obj\Debug\Godot Project.AssemblyInfoInputs.cache
 E:\git\ai_jammers\project\.mono\temp\obj\Debug\Godot Project.AssemblyInfo.cs
 E:\git\ai_jammers\project\.mono\temp\obj\Debug\Godot Project.csproj.CoreCompileInputs.cache
 E:\git\ai_jammers\project\.mono\temp\obj\Debug\Godot Project.dll
 E:\git\ai_jammers\project\.mono\temp\obj\Debug\Godot Project.pdb
+E:\git\ai_jammers\project\.mono\temp\obj\Debug\Godot Project.csproj.AssemblyReference.cache

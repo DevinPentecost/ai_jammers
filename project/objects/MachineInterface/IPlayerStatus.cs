@@ -6,7 +6,6 @@ namespace GodotProject.objects.MachineInterface
 	{
 		Regular,
 		Dashing,
-		Holding,
 		Custom
 	}
 
@@ -15,6 +14,7 @@ namespace GodotProject.objects.MachineInterface
 		Vector2 Position { get; set; } // Current game position of the player
 		int PlayerIndex { get; set; } // The current player ID (0 for left, 1 for right)
 		PlayerState State { get; set; } // The current gameplay state of this player
+		bool HoldingDisc { get; set; } // Whether we are holding a disc
 	}
 
 	public interface IPlayerInput

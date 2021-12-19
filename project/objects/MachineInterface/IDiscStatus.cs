@@ -18,5 +18,12 @@ namespace GodotProject.objects.MachineInterface
 		float Curve { get; set; } // Radians per second the disc rotates
 		DiscState State { get; set; } // Current state of the disc
 		Vector2 Position { get; set; } // Current game location of the disc
+
+		int?
+			ThrowingPlayer
+		{
+			get;
+			set;
+		} // The owner of the disc. If null, anyone can catch it, otherwise the owner cannot catch their own disc
 	}
 }

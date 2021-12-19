@@ -4,6 +4,7 @@ using GodotProject.objects.MachineInterface;
 
 public class Player : Area2D, IPlayerStatus
 {
+	private IDiscStatus _disc = null;
 	[Export] public bool ManualControl;
 
 	[Export] public IPlayerInput PlayerInput = new PlayerInput();
@@ -13,6 +14,7 @@ public class Player : Area2D, IPlayerStatus
 	[Export] public int PlayerIndex { get; set; }
 
 	[Export] public PlayerState State { get; set; }
+	[Export] public bool HoldingDisc { get; set; }
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -22,14 +24,19 @@ public class Player : Area2D, IPlayerStatus
 
 	public override void _PhysicsProcess(float delta)
 	{
+		//If we have the disc, we can't move
+		if (HoldingDisc)
+		{
+			_ProcessHoldingDisc(delta);
+			return;
+		}
+
 		switch (State)
 		{
 			case PlayerState.Regular:
 				_ProcessRunningMovement(delta);
 				break;
 			case PlayerState.Dashing:
-				break;
-			case PlayerState.Holding:
 				break;
 			case PlayerState.Custom:
 				break;
@@ -54,6 +61,15 @@ public class Player : Area2D, IPlayerStatus
 		Transform = transform;
 	}
 
+	private void _ProcessHoldingDisc(float delta)
+	{
+		if (PlayerInput.A)
+		{
+			//Throw the disc
+			_ThrowDisc();
+		}
+	}
+
 	public override void _UnhandledKeyInput(InputEventKey @event)
 	{
 		if (@event.IsAction("player_1_left")) PlayerInput.Left = @event.Pressed;
@@ -62,5 +78,52 @@ public class Player : Area2D, IPlayerStatus
 		if (@event.IsAction("player_1_down")) PlayerInput.Down = @event.Pressed;
 		if (@event.IsAction("player_1_a")) PlayerInput.A = @event.Pressed;
 		if (@event.IsAction("player_1_b")) PlayerInput.B = @event.Pressed;
+	}
+
+	public void _on_Player_area_entered(Area2D other)
+	{
+		switch (other)
+		{
+			case IDiscStatus disc:
+				_CatchDisc(disc);
+				break;
+		}
+	}
+
+	private void _CatchDisc(IDiscStatus disc)
+	{
+		if (disc.ThrowingPlayer == PlayerIndex) return;
+
+		// Catch it!
+		_disc = disc;
+		disc.ThrowingPlayer = PlayerIndex;
+		HoldingDisc = true;
+		disc.State = DiscState.Caught;
+	}
+
+	private void _ThrowDisc()
+	{
+		if (_disc.ThrowingPlayer != PlayerIndex) return;
+
+		//Get the direction from the player
+		var direction = PlayerIndex == 0 ? 0 : Mathf.Pi;
+		if (PlayerInput.Left) direction = Mathf.Tau * (4 / 8F);
+		if (PlayerInput.Right) direction = Mathf.Tau * (0 / 8F);
+		if (PlayerInput.Up) direction = Mathf.Tau * (2 / 8F);
+		if (PlayerInput.Down) direction = Mathf.Tau * (6 / 8F);
+		if (PlayerInput.Left && PlayerInput.Up) direction = Mathf.Tau * (3 / 8F);
+		if (PlayerInput.Right && PlayerInput.Up) direction = Mathf.Tau * (1 / 8F);
+		if (PlayerInput.Left && PlayerInput.Down) direction = Mathf.Tau * (5 / 8F);
+		if (PlayerInput.Right && PlayerInput.Down) direction = Mathf.Tau * (7 / 8F);
+
+		//Any curve on it?
+		_disc.Curve = 0;
+
+		//Throw it!
+		_disc.ThrowingPlayer = null;
+		_disc.State = DiscState.Flying;
+		_disc.Direction = direction;
+		_disc = null;
+		HoldingDisc = false;
 	}
 }

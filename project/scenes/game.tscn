@@ -1,17 +1,21 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://objects/player/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://objects/disc/Disc.tscn" type="PackedScene" id=2]
 
 [node name="Game" type="Node2D"]
 
 [node name="Player2" parent="." instance=ExtResource( 1 )]
-position = Vector2( 903.687, 299.004 )
+position = Vector2( 283.654, 126.142 )
 
 [node name="Sprite" parent="Player2" index="1"]
 color = Color( 1, 0.137255, 0.0235294, 1 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 148.167, 304.344 )
+position = Vector2( 20.6898, 119.469 )
 ManualControl = true
+
+[node name="Disc" parent="." instance=ExtResource( 2 )]
+position = Vector2( 154.841, 121.47 )
 
 [editable path="Player2"]

@@ -5,10 +5,10 @@ using GodotProject.objects.MachineInterface;
 public class Disc : Area2D, IDiscStatus
 {
 	[Export] public DiscState State { get; set; } = DiscState.Flying;
-
 	[Export] public float Speed { get; set; } = 100;
 	[Export] public float Direction { get; set; } = 0;
 	[Export] public float Curve { get; set; } = 1;
+	[Export] public int? ThrowingPlayer { get; set; } = null;
 
 
 	// Called when the node enters the scene tree for the first time.
@@ -18,6 +18,7 @@ public class Disc : Area2D, IDiscStatus
 
 	public override void _PhysicsProcess(float delta)
 	{
+		Visible = true;
 		switch (State)
 		{
 			case DiscState.Flying:
@@ -28,6 +29,7 @@ public class Disc : Area2D, IDiscStatus
 			case DiscState.Stopped:
 				break;
 			case DiscState.Caught:
+				Visible = false;
 				break;
 			case DiscState.Custom:
 				break;
