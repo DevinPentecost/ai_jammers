@@ -5,3 +5,16 @@ builds/html5/
 builds/windows/
 builds/android/
 *.blend1
+
+
+# Godot-specific ignores
+project/.import/
+project/export.cfg
+project/export_presets.cfg
+
+# Imported translations (automatically generated from CSV files)
+project/*.translation
+
+# Mono-specific ignores
+project/.mono/
+project/data_*/

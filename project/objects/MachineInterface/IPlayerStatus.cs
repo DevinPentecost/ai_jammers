@@ -48,25 +48,28 @@ namespace GodotProject.objects.MachineInterface
 			B = default;
 		}
 	}
-	
+
 	public class Dash
 	{
 		public readonly float[] SpeedSteps;
-
-		public int DashStep { get; set; } = -1;
-
-		public bool Dashing => DashStep < 0 || DashStep > SpeedSteps.Length;
 
 		public Dash()
 		{
 			SpeedSteps = new[] { 3, 3, 3, 2.5f, 2, 1.5f, 1 };
 		}
 
-		public void Reset()
+		public int DashStep { get; set; } = -1;
+
+		public bool Complete => DashStep < 0 || DashStep >= SpeedSteps.Length;
+
+		public void Stop()
 		{
 			DashStep = -1;
 		}
+
+		public void Start()
+		{
+			DashStep = 0;
+		}
 	}
-	
-	
 }

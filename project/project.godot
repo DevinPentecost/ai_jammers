@@ -14,7 +14,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="AI Jammers"
+config/name="AiJammers"
 run/main_scene="res://scenes/game.tscn"
 config/icon="res://icon.png"
 

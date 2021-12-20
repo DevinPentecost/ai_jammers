@@ -8,7 +8,7 @@ public class Disc : Area2D, IDiscStatus
 	[Export] public float Speed { get; set; } = 100;
 	[Export] public float Direction { get; set; } = 0;
 	[Export] public float Curve { get; set; } = 1;
-	[Export] public int? ThrowingPlayer { get; set; } = null;
+	public int? ThrowingPlayer { get; set; } = null;
 
 
 	// Called when the node enters the scene tree for the first time.

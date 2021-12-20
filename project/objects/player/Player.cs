@@ -4,10 +4,12 @@ using GodotProject.objects.MachineInterface;
 
 public class Player : Area2D, IPlayerStatus
 {
+	private Dash _dash = new Dash();
+	private Vector2 _dashDirection = Vector2.Zero;
 	private IDiscStatus _disc = null;
 	[Export] public bool ManualControl;
 
-	[Export] public IPlayerInput PlayerInput = new PlayerInput();
+	public IPlayerInput PlayerInput = new PlayerInput();
 
 	[Export] public float Speed { get; set; } = 100;
 
@@ -15,15 +17,13 @@ public class Player : Area2D, IPlayerStatus
 
 	[Export] public PlayerState State { get; set; }
 	[Export] public bool HoldingDisc { get; set; }
+
 	public int DashStep
 	{
 		get => _dash.DashStep;
 		set => _dash.DashStep = value;
 	}
 
-	private Dash _dash = new Dash();
-	private Vector2 _dashDirection = Vector2.Zero;
-	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -36,12 +36,13 @@ public class Player : Area2D, IPlayerStatus
 		if (HoldingDisc)
 		{
 			_ProcessHoldingDisc(delta);
-			return;
 		}
 
 		switch (State)
 		{
 			case PlayerState.Regular:
+				//Can't do anything if we are holding a disc
+				if (HoldingDisc) break;
 				_HandleStartDash();
 				_ProcessRunningMovement(delta);
 				break;
@@ -58,22 +59,21 @@ public class Player : Area2D, IPlayerStatus
 	private void _HandleStartDash()
 	{
 		//Did the player dash?
-		if (PlayerInput.A)
-		{
-			//Which direction were they pressing
-			_dashDirection = Vector2.Zero;
-			if (PlayerInput.Left) _dashDirection += Vector2.Left;
-			if (PlayerInput.Right) _dashDirection += Vector2.Right;
-			if (PlayerInput.Up) _dashDirection += Vector2.Up;
-			if (PlayerInput.Down) _dashDirection += Vector2.Down;
-			
-			// No direction, no dash
-			if (_dashDirection == Vector2.Zero) return;
-			
-			//Begin a dash
-			State = PlayerState.Dashing;
-			_dash.Reset();
-		}
+		if (!PlayerInput.A) return;
+
+		//Which direction were they pressing
+		_dashDirection = Vector2.Zero;
+		if (PlayerInput.Left) _dashDirection += Vector2.Left;
+		if (PlayerInput.Right) _dashDirection += Vector2.Right;
+		if (PlayerInput.Up) _dashDirection += Vector2.Up;
+		if (PlayerInput.Down) _dashDirection += Vector2.Down;
+
+		// No direction, no dash
+		if (_dashDirection == Vector2.Zero) return;
+
+		//Begin a dash
+		State = PlayerState.Dashing;
+		_dash.Start();
 	}
 
 	private void _ProcessRunningMovement(float delta)
@@ -100,14 +100,14 @@ public class Player : Area2D, IPlayerStatus
 		var transform = Transform;
 		transform.origin += movement;
 		Transform = transform;
-		
+
 		// Move to the next step
 		DashStep += 1;
-		if (!_dash.Dashing)
-		{
-			_dash.Reset();
-			State = PlayerState.Regular;
-		}
+		if (!_dash.Complete) return;
+
+		//If the dash is complete, we're done
+		_dash.Stop();
+		State = PlayerState.Regular;
 	}
 
 	private void _ProcessHoldingDisc(float delta)
