@@ -1,8 +1,0 @@
-E:\git\ai_jammers\project\.mono\temp\bin\Debug\AiJammers.dll
-E:\git\ai_jammers\project\.mono\temp\bin\Debug\AiJammers.pdb
-E:\git\ai_jammers\project\.mono\temp\obj\Debug\AiJammers.csprojAssemblyReference.cache
-E:\git\ai_jammers\project\.mono\temp\obj\Debug\AiJammers.AssemblyInfoInputs.cache
-E:\git\ai_jammers\project\.mono\temp\obj\Debug\AiJammers.AssemblyInfo.cs
-E:\git\ai_jammers\project\.mono\temp\obj\Debug\AiJammers.csproj.CoreCompileInputs.cache
-E:\git\ai_jammers\project\.mono\temp\obj\Debug\AiJammers.dll
-E:\git\ai_jammers\project\.mono\temp\obj\Debug\AiJammers.pdb
