@@ -15,6 +15,7 @@ namespace GodotProject.objects.MachineInterface
 		int PlayerIndex { get; set; } // The current player ID (0 for left, 1 for right)
 		PlayerState State { get; set; } // The current gameplay state of this player
 		bool HoldingDisc { get; set; } // Whether we are holding a disc
+		int DashStep { get; set; } // Which step of the player dash are they on?
 	}
 
 	public interface IPlayerInput
@@ -47,4 +48,25 @@ namespace GodotProject.objects.MachineInterface
 			B = default;
 		}
 	}
+	
+	public class Dash
+	{
+		public readonly float[] SpeedSteps;
+
+		public int DashStep { get; set; } = -1;
+
+		public bool Dashing => DashStep < 0 || DashStep > SpeedSteps.Length;
+
+		public Dash()
+		{
+			SpeedSteps = new[] { 3, 3, 3, 2.5f, 2, 1.5f, 1 };
+		}
+
+		public void Reset()
+		{
+			DashStep = -1;
+		}
+	}
+	
+	
 }

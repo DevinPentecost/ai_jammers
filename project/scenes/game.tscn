@@ -19,3 +19,4 @@ ManualControl = true
 position = Vector2( 154.841, 121.47 )
 
 [editable path="Player2"]
+[editable path="Player"]

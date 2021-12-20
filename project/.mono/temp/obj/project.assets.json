@@ -421,9 +421,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\git\\ai_jammers\\project\\Godot Project.csproj",
-      "projectName": "Godot Project",
-      "projectPath": "E:\\git\\ai_jammers\\project\\Godot Project.csproj",
+      "projectUniqueName": "E:\\git\\ai_jammers\\project\\AiJammers.csproj",
+      "projectName": "AiJammers",
+      "projectPath": "E:\\git\\ai_jammers\\project\\AiJammers.csproj",
       "packagesPath": "C:\\Users\\Devin\\.nuget\\packages\\",
       "outputPath": "E:\\git\\ai_jammers\\project\\.mono\\temp\\obj\\",
       "projectStyle": "PackageReference",

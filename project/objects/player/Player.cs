@@ -15,7 +15,15 @@ public class Player : Area2D, IPlayerStatus
 
 	[Export] public PlayerState State { get; set; }
 	[Export] public bool HoldingDisc { get; set; }
+	public int DashStep
+	{
+		get => _dash.DashStep;
+		set => _dash.DashStep = value;
+	}
 
+	private Dash _dash = new Dash();
+	private Vector2 _dashDirection = Vector2.Zero;
+	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -34,14 +42,37 @@ public class Player : Area2D, IPlayerStatus
 		switch (State)
 		{
 			case PlayerState.Regular:
+				_HandleStartDash();
 				_ProcessRunningMovement(delta);
 				break;
 			case PlayerState.Dashing:
+				_ProcessDashMovement(delta);
 				break;
 			case PlayerState.Custom:
 				break;
 			default:
 				throw new ArgumentOutOfRangeException();
+		}
+	}
+
+	private void _HandleStartDash()
+	{
+		//Did the player dash?
+		if (PlayerInput.A)
+		{
+			//Which direction were they pressing
+			_dashDirection = Vector2.Zero;
+			if (PlayerInput.Left) _dashDirection += Vector2.Left;
+			if (PlayerInput.Right) _dashDirection += Vector2.Right;
+			if (PlayerInput.Up) _dashDirection += Vector2.Up;
+			if (PlayerInput.Down) _dashDirection += Vector2.Down;
+			
+			// No direction, no dash
+			if (_dashDirection == Vector2.Zero) return;
+			
+			//Begin a dash
+			State = PlayerState.Dashing;
+			_dash.Reset();
 		}
 	}
 
@@ -59,6 +90,24 @@ public class Player : Area2D, IPlayerStatus
 		var transform = Transform;
 		transform.origin += movement;
 		Transform = transform;
+	}
+
+	private void _ProcessDashMovement(float delta)
+	{
+		//Continue moving in the same direction but at a new speed
+		var speed = Speed * _dash.SpeedSteps[DashStep];
+		var movement = _dashDirection * speed * delta;
+		var transform = Transform;
+		transform.origin += movement;
+		Transform = transform;
+		
+		// Move to the next step
+		DashStep += 1;
+		if (!_dash.Dashing)
+		{
+			_dash.Reset();
+			State = PlayerState.Regular;
+		}
 	}
 
 	private void _ProcessHoldingDisc(float delta)
