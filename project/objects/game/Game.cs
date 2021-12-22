@@ -2,18 +2,24 @@ using Godot;
 
 public class Game : Node2D
 {
-	// Declare member variables here. Examples:
-	// private int a = 2;
-	// private string b = "text";
+	public const float WallSize = 10;
+	private PackedScene WallScene = ResourceLoader.Load<PackedScene>("res://objects/arena/wall.tscn");
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		_InitializeWalls();
 	}
 
-//  // Called every frame. 'delta' is the elapsed time since the previous frame.
-//  public override void _Process(float delta)
-//  {
-//      
-//  }
+	private void _InitializeWalls()
+	{
+		var arenaSize = GetViewportRect().Size;
+		var topWall = WallScene.Instance() as Wall;
+		AddChild(topWall);
+		topWall?._SetTop(arenaSize);
+
+		var bottomWall = WallScene.Instance() as Wall;
+		AddChild(bottomWall);
+		bottomWall?._SetBottom(arenaSize);
+	}
 }
