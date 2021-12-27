@@ -2,7 +2,7 @@ using System;
 using Godot;
 using GodotProject.objects.MachineInterface;
 
-public class Player : Area2D, IPlayerStatus
+public class Player : Area2D, IPlayerStatus, ITicks
 {
 	private Dash _dash = new Dash();
 	private Vector2 _dashDirection = Vector2.Zero;
@@ -24,13 +24,7 @@ public class Player : Area2D, IPlayerStatus
 		set => _dash.DashStep = value;
 	}
 
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-		SetProcessUnhandledKeyInput(ManualControl);
-	}
-
-	public override void _PhysicsProcess(float delta)
+	public void Tick(float delta)
 	{
 		//If we have the disc, we can't move
 		if (HoldingDisc)
@@ -54,6 +48,12 @@ public class Player : Area2D, IPlayerStatus
 			default:
 				throw new ArgumentOutOfRangeException();
 		}
+	}
+
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready()
+	{
+		SetProcessUnhandledKeyInput(ManualControl);
 	}
 
 	private void _HandleStartDash()

@@ -2,7 +2,7 @@ using System;
 using Godot;
 using GodotProject.objects.MachineInterface;
 
-public class Disc : Area2D, IDiscStatus
+public class Disc : Area2D, IDiscStatus, ITicks
 {
 	[Export] public DiscState State { get; set; } = DiscState.Flying;
 	[Export] public float Speed { get; set; } = 100;
@@ -10,13 +10,7 @@ public class Disc : Area2D, IDiscStatus
 	[Export] public float Curve { get; set; } = 1;
 	public int? ThrowingPlayer { get; set; } = null;
 
-
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-	}
-
-	public override void _PhysicsProcess(float delta)
+	public void Tick(float delta)
 	{
 		Visible = true;
 		switch (State)
@@ -42,11 +36,23 @@ public class Disc : Area2D, IDiscStatus
 	{
 		//First rotate
 		Direction += Curve * delta;
+		Direction = MathHelpers.CenterAngle(Direction);
 
 		//Now move in that direction
 		var movement = Vector2.Right.Rotated(Direction) * Speed * delta;
 		var transform2D = Transform;
 		transform2D.origin += movement;
 		Transform = transform2D;
+	}
+
+	public void OnDiscAreaEntered(Area2D other)
+	{
+		switch (other)
+		{
+			case Wall wall:
+				//Bounce
+				Direction = -Direction;
+				break;
+		}
 	}
 }

@@ -19,6 +19,9 @@ ManualControl = true
 
 [node name="Disc" parent="." instance=ExtResource( 2 )]
 position = Vector2( 154.841, 121.47 )
+Speed = 50.0
+Direction = 4.0
+Curve = 0.0
 
 [editable path="Player2"]
 [editable path="Player"]

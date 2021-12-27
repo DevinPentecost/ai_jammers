@@ -19,7 +19,7 @@ func _draw():
 	draw_circle(Vector2.ZERO, radius, color)
 "
 
-[node name="Player" type="Area2D"]
+[node name="Player" type="Area2D" groups=["ticks"]]
 collision_mask = 14
 script = ExtResource( 1 )
 

@@ -1,5 +1,10 @@
 using Godot;
 
+public interface ITicks
+{
+	void Tick(float delta);
+}
+
 public class Game : Node2D
 {
 	public const float WallSize = 10;
@@ -21,5 +26,16 @@ public class Game : Node2D
 		var bottomWall = WallScene.Instance() as Wall;
 		AddChild(bottomWall);
 		bottomWall?._SetBottom(arenaSize);
+	}
+
+	public override void _PhysicsProcess(float delta)
+	{
+		//Get everything that can tick
+		var ticks = GetTree().GetNodesInGroup("ticks");
+		foreach (var tick in ticks)
+		{
+			var tickable = tick as ITicks;
+			tickable?.Tick(delta);
+		}
 	}
 }
