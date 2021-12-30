@@ -141,37 +141,35 @@ public class Player : Area2D, IPlayerStatus, ITicks
 
 	private void _CatchDisc(IDiscStatus disc)
 	{
-		if (disc.ThrowingPlayer == PlayerIndex) return;
+		if (disc.HoldingPlayerIndex == PlayerIndex) return;
 
 		// Catch it!
 		_disc = disc;
-		disc.ThrowingPlayer = PlayerIndex;
+		disc.HoldingPlayerIndex = PlayerIndex;
 		HoldingDisc = true;
 		disc.State = DiscState.Caught;
 	}
 
 	private void _ThrowDisc()
 	{
-		if (_disc.ThrowingPlayer != PlayerIndex) return;
+		if (_disc.HoldingPlayerIndex != PlayerIndex) return;
 
 		//Get the direction from the player
 		var direction = PlayerIndex == 0 ? 0 : Mathf.Pi;
-		if (PlayerInput.Left) direction = Mathf.Tau * (4 / 8F);
-		if (PlayerInput.Right) direction = Mathf.Tau * (0 / 8F);
-		if (PlayerInput.Up) direction = Mathf.Tau * (2 / 8F);
-		if (PlayerInput.Down) direction = Mathf.Tau * (6 / 8F);
-		if (PlayerInput.Left && PlayerInput.Up) direction = Mathf.Tau * (3 / 8F);
-		if (PlayerInput.Right && PlayerInput.Up) direction = Mathf.Tau * (1 / 8F);
-		if (PlayerInput.Left && PlayerInput.Down) direction = Mathf.Tau * (5 / 8F);
-		if (PlayerInput.Right && PlayerInput.Down) direction = Mathf.Tau * (7 / 8F);
+		if (PlayerInput.Left && PlayerInput.Up) direction = Mathf.Tau * (-3 / 8F);
+		else if (PlayerInput.Right && PlayerInput.Up) direction = Mathf.Tau * (-1 / 8F);
+		else if (PlayerInput.Left && PlayerInput.Down) direction = Mathf.Tau * (3 / 8F);
+		else if (PlayerInput.Right && PlayerInput.Down) direction = Mathf.Tau * (1 / 8F);
+		else if (PlayerInput.Left) direction = Mathf.Tau * (4 / 8F);
+		else if (PlayerInput.Right) direction = Mathf.Tau * (0 / 8F);
+		else if (PlayerInput.Up) direction = Mathf.Tau * (-2 / 8F);
+		else if (PlayerInput.Down) direction = Mathf.Tau * (2 / 8F);
 
 		//Any curve on it?
 		_disc.Curve = 0;
 
 		//Throw it!
-		_disc.ThrowingPlayer = null;
-		_disc.State = DiscState.Flying;
-		_disc.Direction = direction;
+		_disc.Throw(direction);
 		_disc = null;
 		HoldingDisc = false;
 	}

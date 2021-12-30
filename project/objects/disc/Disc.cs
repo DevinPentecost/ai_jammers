@@ -8,7 +8,14 @@ public class Disc : Area2D, IDiscStatus, ITicks
 	[Export] public float Speed { get; set; } = 100;
 	[Export] public float Direction { get; set; } = 0;
 	[Export] public float Curve { get; set; } = 1;
-	public int? ThrowingPlayer { get; set; } = null;
+	public int? HoldingPlayerIndex { get; set; } = null;
+
+	public void Throw(float direction)
+	{
+		HoldingPlayerIndex = null;
+		State = DiscState.Flying;
+		Direction = direction;
+	}
 
 	public void Tick(float delta)
 	{

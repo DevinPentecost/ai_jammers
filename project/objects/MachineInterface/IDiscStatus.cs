@@ -20,10 +20,12 @@ namespace GodotProject.objects.MachineInterface
 		Vector2 Position { get; set; } // Current game location of the disc
 
 		int?
-			ThrowingPlayer
+			HoldingPlayerIndex
 		{
 			get;
 			set;
 		} // The owner of the disc. If null, anyone can catch it, otherwise the owner cannot catch their own disc
+
+		void Throw(float direction);
 	}
 }

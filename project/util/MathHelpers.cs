@@ -12,8 +12,8 @@ public static class MathHelpers
 	{
 		var offset = useDegrees ? 180 : Mathf.Pi;
 		angle = ClampAngle(angle, useDegrees);
-		if (angle > offset) angle = -(angle - offset);
-		else if (angle < -offset) angle = offset - (angle + offset);
+		if (angle > offset) angle = -offset + angle;
+		else if (angle < -offset) angle = offset + (angle - offset);
 		return angle;
 	}
 }
